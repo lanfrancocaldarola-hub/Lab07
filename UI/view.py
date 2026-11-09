@@ -3,9 +3,12 @@ from UI.alert import AlertManager
 
 '''
     VIEW:
-    - Rappresenta l'interfaccia utente
-    - Riceve i dati dal MODELLO e li presenta senza modificarli
+- Rappresenta l'interfaccia utente
+
+- Riceve i dati dal MODELLO e li presenta senza modificarli
+
 '''
+
 
 class View:
     def __init__(self, page: ft.Page):
@@ -36,10 +39,35 @@ class View:
         self.txt_titolo = ft.Text(value="Biblioteche di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        # TODO
+        self.dd_biblioteca = ft.Dropdown(
+            label="Biblioteca",
+            width=300,
+            on_select=self.controller.leggi_biblioteca
+        )
+        self.dd_genere = ft.Dropdown(
+            label="Genere",
+            width=300,
+            on_select=self.controller.leggi_genere
+        )
+
+        row_filtri = ft.Row(
+            controls=[self.dd_biblioteca, self.dd_genere],
+            alignment=ft.MainAxisAlignment.CENTER
+        )
 
         # Sezione 3: Libri
-        # TODO
+        self.btn_mostra_libri = ft.Button(
+            "Mostra Libri",
+            on_click=self.controller.handle_mostra_libri
+        )
+        self.lst_libri = ft.ListView(
+            expand=True,
+            spacing=10,
+            padding=20,
+            height=300
+        )
+
+        self.controller.popola_dropdown()
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -53,10 +81,11 @@ class View:
             ft.Divider(),
 
             # Sezione 2: Filtraggio
-            # TODO
+            row_filtri,
 
             # Sezione 3: Libri
-            # TODO
+            self.btn_mostra_libri,
+            self.lst_libri
         )
 
         self.page.scroll = "adaptive"
